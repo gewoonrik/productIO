@@ -11,3 +11,4 @@ proguard/
 *.ap_
 *.dex
 *.class
+.idea/
