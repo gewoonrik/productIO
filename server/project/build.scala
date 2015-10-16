@@ -7,8 +7,8 @@ import ScalateKeys._
 
 object ProductioBuild extends Build {
   val Organization = "nl.tudelft"
-  val Name = "productio"
-  val Version = "0.1.0-SNAPSHOT"
+  val Name = "productio-server"
+  val Version = "0.2"
   val ScalaVersion = "2.11.6"
   val ScalatraVersion = "2.4.0-RC2-2"
 
