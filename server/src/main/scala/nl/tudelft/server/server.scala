@@ -1,24 +1,37 @@
 package nl.tudelft.server
 
 import com.mongodb.casbah.Imports._
+import org.scalatra.{InternalServerError, Ok, ActionResult}
 
-class server extends ProductioStack {
+// JSON-related libraries
+import org.json4s.{DefaultFormats, Formats}
+import org.json4s._
+import org.json4s.jackson.JsonMethods._
+// JSON handling support from Scalatra
+
+
+class Server extends ProductioStack {
 
   val mongoClient = MongoClient("localhost", 27017)
   val productCollection = mongoClient("productio")("products")
+  val macCollection = mongoClient("productio")("macs")
 
-  /*
+  // Sets up automatic case class to JSON output serialization, required by
+  // the JValueResult trait.
+  protected implicit val jsonFormats: Formats = DefaultFormats
+
+  /*s
    POST product { id }
    */
   post("/product/:id") {
     val user = request.getHeader("user")
     val id = params("id")
     val entry = MongoDBObject("productid" -> id, "time" -> new BSONTimestamp(), "event" -> "IN", "user" -> user)
-    var result = "OK"
+    var result = Ok()
     try {
       productCollection += entry
     } catch {
-      case e: Throwable => result = e.getMessage;
+      case e: Throwable => result = InternalServerError(e.getMessage);
     }
     println(user + " posted " + id + "  => " + result)
     result
@@ -28,13 +41,35 @@ class server extends ProductioStack {
     val user = request.getHeader("user")
     val id = params("id")
     val entry = MongoDBObject("productid" -> id, "time" -> new BSONTimestamp(), "event" -> "OUT", "user" -> user)
-    var result = "OK"
+    var result = Ok()
     try {
-      productCollection += engenry
+      productCollection += entry
     } catch {
-      case e: Throwable => result = e.getMessage;
+      case e: Throwable => result = InternalServerError(e.getMessage);
     }
     println(user + " deleted " + id + "  => " + result)
     result
   }
+
+  post("/home/online") {
+    val user = request.getHeader("user")
+    var result = Ok()
+    var macRecording : Option[MacRecording] = None;
+    try {
+      macRecording = Some(parse(request.body).extract[MacRecording])
+    } catch {
+      case e : Throwable => result = InternalServerError("Bad input provided: " + e.getMessage)
+    }
+    try {
+      macRecording.map(_.macs).foreach(mac => {
+        macCollection += MongoDBObject("mac" -> mac, "time" -> macRecording.get.timestamp, "user" -> user)
+      })
+    } catch {
+      case e: Throwable => result = InternalServerError("Failed to store entity in mongodb: " + e.getMessage);
+    }
+    println(user + " posted macs " + macRecording + "  => " + result)
+    result
+  }
 }
+
+case class MacRecording(macs : Array[String], timestamp: Long)
