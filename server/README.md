@@ -1,6 +1,13 @@
 # productio #
 
-## Build & Run ##
+## Deployement
+
+```sh
+sbt clean assembly
+```
+To run the server, run `java -jar <assembly>.jar`
+
+## Development: run locally ##
 
 ```sh
 $ cd productio

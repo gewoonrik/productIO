@@ -4,6 +4,9 @@ import org.scalatra.sbt._
 import org.scalatra.sbt.PluginKeys._
 import com.mojolly.scalate.ScalatePlugin._
 import ScalateKeys._
+import sbtassembly.AssemblyKeys
+import AssemblyKeys._
+
 
 object ProductioBuild extends Build {
   val Organization = "nl.tudelft"
@@ -20,6 +23,8 @@ object ProductioBuild extends Build {
       name := Name,
       version := Version,
       scalaVersion := ScalaVersion,
+      test in assembly := {},
+      assemblyJarName in assembly := Name + "-" + Version + ".jar",
       resolvers += Classpaths.typesafeReleases,
       resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
       resolvers += "snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
