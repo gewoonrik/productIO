@@ -15,8 +15,8 @@ RUN go build -o /bin/$APP
 # Program default variables
 # 900 seconds = 15 min
 ENV SCAN_INTERVAL 900
-ENV USER undefined
-ENV SERVER http://localhost
+ENV USER Rik
+ENV SERVER http://erwinvaneyk.nl
 
 ENTRYPOINT [APP]
 
