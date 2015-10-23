@@ -2,6 +2,9 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"os/exec"
@@ -10,10 +13,6 @@ import (
 
 	"github.com/lair-framework/go-nmap"
 )
-
-import "encoding/json"
-import "fmt"
-import "io/ioutil"
 
 const FILE = "devices.xml"
 const NMAP_CMD = "sudo nmap -sn  192.168.1.63-253 -oX " + FILE + " > /dev/null"
@@ -47,21 +46,27 @@ func sendToServer(server string, user string) {
 
 	// Construct request
 	macRecording := new(MacRecording)
-	macRecording.timestamp = time.Now().Unix()
+	macRecording.Timestamp = time.Now().Unix()
 	n := len(xmlResults.Hosts)
-	macRecording.macs = make([]string, n, 2*n)
+	macRecording.Macs = make([]string, n, 2*n)
 	i := 0
 	for key := range xmlResults.Hosts {
 		addresses := xmlResults.Hosts[key].Addresses
 		if len(addresses) > 1 {
 			fmt.Printf("%s\n", xmlResults.Hosts[key].Addresses[1].Addr)
-			macRecording.macs[i] = addresses[1].Addr
+			macRecording.Macs[i] = addresses[1].Addr
 			i += 1
 		}
 	}
-	jsonBody, _ := json.Marshal(macRecording)
+	jsonBody, err := json.Marshal(macRecording)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	// Send request
+	fmt.Println("Payload: " + string(jsonBody))
 	req, _ := http.NewRequest("POST", server+ENDPOINT, bytes.NewReader(jsonBody))
 	req.Header.Add("user", user)
 	client := &http.Client{}
@@ -74,6 +79,6 @@ func sendToServer(server string, user string) {
 }
 
 type MacRecording struct {
-	macs      []string
-	timestamp int64
+	Macs      []string
+	Timestamp int64
 }

@@ -56,15 +56,19 @@ class Server extends ProductioStack {
   post("/api/home/online") {
     val user = request.getHeader("user")
     var result = Ok()
-    var macRecording : Option[MacRecording] = None;
+    var macRecording : Option[MacRecording] = None
     try {
+      println(request.body)
       macRecording = Some(parse(request.body).extract[MacRecording])
     } catch {
-      case e : Throwable => result = InternalServerError("Bad input provided: " + e.getMessage)
+      case e : Throwable => {
+        result = InternalServerError("Bad input provided: " + e.getMessage)
+        e.printStackTrace();
+      }
     }
     try {
-      macRecording.map(_.macs).foreach(mac => {
-        macCollection += MongoDBObject("mac" -> mac, "time" -> macRecording.get.timestamp, "user" -> user)
+      macRecording.map(_.Macs).foreach(mac => {
+        macCollection += MongoDBObject("mac" -> mac, "time" -> macRecording.get.Timestamp, "user" -> user)
       })
     } catch {
       case e: Throwable => result = InternalServerError("Failed to store entity in mongodb: " + e.getMessage);
@@ -78,4 +82,4 @@ class Server extends ProductioStack {
   }
 }
 
-case class MacRecording(macs : Array[String], timestamp: Long)
+case class MacRecording(Macs : Array[String], Timestamp: Long)
