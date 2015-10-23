@@ -12,7 +12,8 @@ import org.json4s.jackson.JsonMethods._
 
 class Server extends ProductioStack {
 
-  val mongoClient = MongoClient("mongodb", 27017)
+
+  val mongoClient = MongoClient(sys.env("MONGODB_PORT"), 27017)
   val productCollection = mongoClient("productio")("products")
   val macCollection = mongoClient("productio")("macs")
 
@@ -23,7 +24,7 @@ class Server extends ProductioStack {
   /*s
    POST product { id }
    */
-  post("/product/:id") {
+  post("/api/product/:id") {
     val user = request.getHeader("user")
     val id = params("id")
     val entry = MongoDBObject("productid" -> id, "time" -> new BSONTimestamp(), "event" -> "IN", "user" -> user)
@@ -37,7 +38,7 @@ class Server extends ProductioStack {
     result
   }
 
-  delete("/product/:id") {
+  delete("/api/product/:id") {
     val user = request.getHeader("user")
     val id = params("id")
     val entry = MongoDBObject("productid" -> id, "time" -> new BSONTimestamp(), "event" -> "OUT", "user" -> user)
@@ -51,7 +52,7 @@ class Server extends ProductioStack {
     result
   }
 
-  post("/home/online") {
+  post("/api/home/online") {
     val user = request.getHeader("user")
     var result = Ok()
     var macRecording : Option[MacRecording] = None;
@@ -69,6 +70,10 @@ class Server extends ProductioStack {
     }
     println(user + " posted macs " + macRecording + "  => " + result)
     result
+  }
+
+  get("/") {
+    "API OK"
   }
 }
 
