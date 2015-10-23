@@ -12,7 +12,7 @@ import org.json4s.jackson.JsonMethods._
 
 class Server extends ProductioStack {
 
-  val mongoClient = MongoClient("localhost", 27017)
+  val mongoClient = MongoClient("mongodb", 27017)
   val productCollection = mongoClient("productio")("products")
   val macCollection = mongoClient("productio")("macs")
 

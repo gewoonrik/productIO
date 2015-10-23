@@ -11,7 +11,7 @@ import AssemblyKeys._
 object ProductioBuild extends Build {
   val Organization = "nl.tudelft"
   val Name = "productio-server"
-  val Version = "0.2"
+  val Version = "0.3"
   val ScalaVersion = "2.11.6"
   val ScalatraVersion = "2.4.0-RC2-2"
 
