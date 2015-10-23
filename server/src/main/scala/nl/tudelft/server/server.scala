@@ -12,8 +12,9 @@ import org.json4s.jackson.JsonMethods._
 
 class Server extends ProductioStack {
 
+  val mongoDBAddress = sys.env("MONGODB_PORT_27017_TCP_ADDR") + ":" + sys.env("MONGODB_PORT_27017_TCP_PORT")
 
-  val mongoClient = MongoClient(sys.env("MONGODB_PORT"), 27017)
+  val mongoClient = MongoClient(mongoDBAddress , 27017)
   val productCollection = mongoClient("productio")("products")
   val macCollection = mongoClient("productio")("macs")
 

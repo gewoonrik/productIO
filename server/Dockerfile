@@ -8,6 +8,6 @@ RUN apt-get update && apt-get install openjdk-7-jre-headless -y
 
 RUN mkdir -p /opt/productio-server/
 
-ADD target/scala-2.11/productio-server.jar /opt/productio-server/
+ADD target/productio-server.jar /opt/productio-server/
 
 ENTRYPOINT ["java", "-jar", "/opt/productio-server/productio-server.jar"]
