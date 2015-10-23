@@ -5,6 +5,9 @@ MAINTAINER Erwin van Eyk <erwinvaneyk@gmail.com>
 RUN apt-get update && apt-get install openjdk-7-jre-headless -y
 
 # Build application
-ADD target/scala-2.11/productio-server.jar /app/
 
-ENTRYPOINT ["java -jar /app/productio-server.jar"]
+RUN mkdir -p /opt/productio-server/
+
+ADD target/scala-2.11/productio-server.jar /opt/productio-server/
+
+ENTRYPOINT ["java", "-jar", "/opt/productio-server/productio-server.jar"]
