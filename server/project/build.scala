@@ -30,6 +30,8 @@ object ProductioBuild extends Build {
       resolvers += "snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
       resolvers += "releases"  at "https://oss.sonatype.org/content/groups/scala-tools",
       resolvers += "releases"  at "https://oss.sonatype.org/content/repositories/releases/",
+      resolvers += "Novus Release Repository" at "http://repo.novus.com/releases/",
+      resolvers += "Novus Snapshots Repository" at "http://repo.novus.com/snapshots/",
       libraryDependencies ++= Seq(
         "org.scalatra" %% "scalatra" % ScalatraVersion,
         "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
@@ -39,9 +41,10 @@ object ProductioBuild extends Build {
         "ch.qos.logback" % "logback-classic" % "1.1.2" % "runtime",
         "org.eclipse.jetty" % "jetty-webapp" % "9.2.10.v20150310" % "container;compile",
         "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
-        "org.eclipse.jetty" % "jetty-webapp" % "8.1.8.v20121106" % "container"
+        "org.eclipse.jetty" % "jetty-webapp" % "8.1.8.v20121106" % "container",
+        "com.novus" %% "salat" % "1.9.9",
+        "org.mongodb" % "casbah_2.11" % "2.8.2"
       ),
-      libraryDependencies += "org.mongodb" % "casbah_2.11" % "2.8.2",
         scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
         Seq(
           TemplateConfig(
