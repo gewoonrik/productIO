@@ -1,12 +1,15 @@
 package nl.tudelft.server
 
+import com.mongodb.casbah.Imports
 import com.mongodb.casbah.Imports._
+import com.mongodb.casbah.commons.TypeImports
 import org.scalatra.{InternalServerError, Ok, ActionResult}
 
 // JSON-related libraries
 import org.json4s.{DefaultFormats, Formats}
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
+import org.json4s.JsonDSL._
 // JSON handling support from Scalatra
 
 
@@ -71,6 +74,14 @@ class Server extends ProductioStack {
     }
     println(user + " posted macs " + macRecording + "  => " + result)
     result
+  }
+
+  get("/api/product") {
+    productCollection.find().toList
+  }
+
+  get("/api/home/online") {
+    macCollection.find().toList
   }
 
   get("/") {
