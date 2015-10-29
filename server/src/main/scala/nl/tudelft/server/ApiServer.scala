@@ -19,11 +19,18 @@ import org.json4s.jackson.Serialization.{read, write}
 
 object ApiServer {
 
-  // Test (after vagrant up)
-  val mongoDBAddress = "localhost:27017"
+  val logger =  LoggerFactory.getLogger(getClass)
 
-  // Production
-  //  val mongoDBAddress = sys.env("MONGODB_PORT_27017_TCP_ADDR") + ":" + sys.env("MONGODB_PORT_27017_TCP_PORT")
+  // Test (after vagrant up)
+  var mongoDBAddress = "localhost:27017"
+  try {
+    // Production
+    mongoDBAddress = sys.env("MONGODB_PORT_27017_TCP_ADDR") + ":" + sys.env("MONGODB_PORT_27017_TCP_PORT")
+  } catch {
+    case e : NoSuchElementException => logger.warn("No environment variables found for mongo-database! " +
+      "Falling back to dev-settings: localhost:27017")
+  }
+
   val mongoClient = MongoClient(mongoDBAddress , 27017)
 }
 
