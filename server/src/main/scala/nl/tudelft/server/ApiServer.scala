@@ -21,9 +21,6 @@ object ApiServer {
 
   // Test (after vagrant up)
   val mongoDBAddress = "localhost:27017"
-//  curl -X POST --header "user: test" http://localhost:8080/api/product/123
-//  curl -X DELETE --header "user: test" http://localhost:8080/api/product/123
-//  curl -X POST -H "Content-Type: application/json" --header "user: test" -d '{ "macs" : ["mac1"], "timestamp" : 13233  }' http://localhost:8080/api/home/online
 
   // Production
   //  val mongoDBAddress = sys.env("MONGODB_PORT_27017_TCP_ADDR") + ":" + sys.env("MONGODB_PORT_27017_TCP_PORT")
@@ -38,28 +35,35 @@ class ApiServer extends ProductioStack {
 
   val logger =  LoggerFactory.getLogger(getClass)
 
-  /*s
-   POST product { id }
+  /**
+   * Add a product
+   *
+   * Example: curl -X POST --header "user: test" http://localhost:8080/api/product/123
    */
   post("/api/product/:id") {
     val user = request.getHeader("user")
     val id = params("id")
     try {
       val result = ProductEvent.create(new BSONTimestamp(), id,  "IN", user)
-      println(user + " posted " + id + "  => " + result)
+      logger.info(user + " posted " + id + "  => " + result)
       write(result._1)
     } catch {
       case e: Throwable => InternalServerError("Failed to add product, due to: " + e.getMessage)
     }
   }
 
+  /**
+   * Remove a product
+   *
+   * Example: curl -X DELETE --header "user: test" http://localhost:8080/api/product/123
+   */
   delete("/api/product/:id") {
     val user = request.getHeader("user")
     val id = params("id")
 
     try {
       val result = ProductEvent.create(new BSONTimestamp(), id, "OUT", user)
-      println(user + " deleted " + id + "  => " + result)
+      logger.info(user + " deleted " + id + "  => " + result)
       write(result._1)
     } catch {
       case e: Throwable => InternalServerError("Failed to delete product, due to: " + e.getMessage)
@@ -71,6 +75,11 @@ class ApiServer extends ProductioStack {
   }
 
   // Homeserver
+  /**
+   * Add a mac recording
+   *
+   * Example: curl -X POST -H "Content-Type: application/json" --header "user: test" -d '{ "macs" : ["mac1"], "timestamp" : 13233  }' http://localhost:8080/api/home/online
+   */
   post("/api/home/online") {
     val user = request.getHeader("user")
     var result = Ok()
@@ -96,7 +105,7 @@ class ApiServer extends ProductioStack {
     } catch {
       case e: Throwable => result = InternalServerError("Failed to store entity in mongodb: " + e.getMessage);
     }
-    println(user + " posted macs " + macRecording + "  => " + result)
+    logger.info(user + " posted macs " + macRecording + "  => " + result)
     result
   }
 
