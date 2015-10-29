@@ -22,6 +22,7 @@ object ApiServer {
   // Test (after vagrant up)
   val mongoDBAddress = "localhost:27017"
 //  curl -X POST --header "user: test" http://localhost:8080/api/product/123
+//  curl -X DELETE --header "user: test" http://localhost:8080/api/product/123
 //  curl -X POST -H "Content-Type: application/json" --header "user: test" -d '{ "macs" : ["mac1"], "timestamp" : 13233  }' http://localhost:8080/api/home/online
 
   // Production
@@ -43,17 +44,26 @@ class ApiServer extends ProductioStack {
   post("/api/product/:id") {
     val user = request.getHeader("user")
     val id = params("id")
-    val result = ProductEvent.create(new BSONTimestamp(), id,  "IN", user)
-    println(user + " posted " + id + "  => " + result)
-    write(result._1)
+    try {
+      val result = ProductEvent.create(new BSONTimestamp(), id,  "IN", user)
+      println(user + " posted " + id + "  => " + result)
+      write(result._1)
+    } catch {
+      case e: Throwable => InternalServerError("Failed to add product, due to: " + e.getMessage)
+    }
   }
 
   delete("/api/product/:id") {
     val user = request.getHeader("user")
     val id = params("id")
-    val result = ProductEvent.create(new BSONTimestamp(), id,  "OUT", user)
-    println(user + " deleted " + id + "  => " + result)
-    write(result._1)
+
+    try {
+      val result = ProductEvent.create(new BSONTimestamp(), id, "OUT", user)
+      println(user + " deleted " + id + "  => " + result)
+      write(result._1)
+    } catch {
+      case e: Throwable => InternalServerError("Failed to delete product, due to: " + e.getMessage)
+    }
   }
 
   get("/api/product") {
