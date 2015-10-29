@@ -3,8 +3,8 @@ package nl.tudelft.server
 import org.scalatra.test.scalatest._
 import org.scalatest.FunSuiteLike
 
-class ServerTest extends ScalatraSuite with FunSuiteLike {
-  addServlet(classOf[Server], "/*")
+class ApiServerTest extends ScalatraSuite with FunSuiteLike {
+  addServlet(classOf[ApiServer], "/*")
 
   test("Issue new product OUT-event") {
     delete("/product/1", Map("user" -> "test")) {
