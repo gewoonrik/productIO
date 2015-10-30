@@ -10,12 +10,13 @@ import (
 	"os/exec"
 	"strconv"
 	"time"
-
 	"github.com/lair-framework/go-nmap"
 )
 
+var nmap_cmd = ""
 const FILE = "devices.xml"
-const NMAP_CMD = "sudo nmap -sn  192.168.1.63-253 -oX " + FILE + " > /dev/null"
+const NMAP_DEFAULT = "sudo nmap -sn  192.168.1.63-253"
+const NMAP_AFFIX = "-oX " + FILE + " > /dev/null"
 const ENDPOINT = "/api/home/online"
 
 func main() {
@@ -25,6 +26,14 @@ func main() {
 	// export SCAN_INTERVAL=1000
 	user := os.Getenv("USER")
 	server := os.Getenv("SERVER")
+	nmap_cmd := os.Getenv("NMAP")
+	
+	if(len(nmap_cmd) == 0) {
+		nmap_cmd = NMAP_DEFAULT
+	}
+	nmap_cmd = fmt.Sprint(nmap_cmd, " ", NMAP_AFFIX)
+		
+
 	interval, _ := strconv.Atoi(os.Getenv("SCAN_INTERVAL")) // In seconds
 
 	for {
@@ -35,7 +44,7 @@ func main() {
 }
 
 func scan() {
-	exec.Command("/bin/sh", "-c", NMAP_CMD).Output()
+	exec.Command("/bin/sh", "-c", nmap_cmd).Output()
 	fmt.Print("Scan completed!\n")
 }
 
