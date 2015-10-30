@@ -13,6 +13,7 @@ docker run \
 -e SERVER=<server> \
 -e SCAN_INTERVAL=<interval-in-seconds> \
 --name=homeserver-instance \
+--net=host
 -d \
 productio/homeserver:latest
 ```
