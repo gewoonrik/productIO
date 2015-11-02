@@ -1,0 +1,14 @@
+b_in en b_uit datum in en datum uit
+
+vector dagen, waarop brood aanwezig was
+
+vector mensen thuis per dag
+
+
+1 brood verdelen over dagen met gewogen gemiddelde adv mensen thuis op die dag.
+
+
+dit zorgt voor een distributie per dag van brooddeltas
+
+
+DIT GEBRUIKEN WE VOOR Q-LEARNING PHASE

@@ -1,0 +1,45 @@
+elke avond om 8 uur brood estimaten dat die dag gebruikt is op basis van het brood wat de vorige dag over was
+
+maandag avond: brood = 0.8
+
+dinsdag processen Bereken(0.8, aantal_mensen_thuis_dinsdag) = ... 0.6
+
+
+Mensen_Thuis[24] = vector van 24 uur met ieder uur hoeveel mensen thuis waren.
+
+Brood_eind_vorige_dag
+
+
+als er nieuw brood gekocht wordt, doe de vorige state aan begin vd dag +1
+
+
+R(hoeveelheid_brood, dagvdweek)
+
+hoeveelheid brood = 0 t/m 10 met stappen van 0.1
+dagvdweek = 1..7
+
+
+R = afhankelijk van historical data, behalve vandaag
+
+D_b(V_mensen_thuis, dagvdweek) <- delta brood vandaag
+
+
+Aanname: iedereen eet even veel brood.
+
+Dus elke dag vd heeft een eigen eet karakterestiek (eetdelta) die genormaliseerd is voor 1 persoon.
+
+ 
+Ieder uur van de dag i heeft een gewicht a_i.
+
+bereken:
+
+som i = 0 t/m 23 -> a_i * aantal_mensen_thuis_i  gedeeld door som van weights = gewogen gemiddelde
+
+
+
+1 
+
+
+0.1 -> 0.2
+0.2 -> 0.1
+0.3 -> 0.4
