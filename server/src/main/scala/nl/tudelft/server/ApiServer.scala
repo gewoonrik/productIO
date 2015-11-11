@@ -15,11 +15,12 @@ import org.json4s._
 import org.json4s.jackson.JsonMethods._
 import org.json4s.JsonDSL._
 import org.json4s.jackson.Serialization.{read, write}
+
 // JSON handling support from Scalatra
 
 object ApiServer {
 
-  val logger =  LoggerFactory.getLogger(getClass)
+  val logger = LoggerFactory.getLogger(getClass)
 
   // Test (after vagrant up)
   var mongoDBAddress = "localhost:27017"
@@ -27,11 +28,11 @@ object ApiServer {
     // Production
     mongoDBAddress = sys.env("MONGODB_PORT_27017_TCP_ADDR") + ":" + sys.env("MONGODB_PORT_27017_TCP_PORT")
   } catch {
-    case e : NoSuchElementException => logger.warn("No environment variables found for mongo-database! " +
+    case e: NoSuchElementException => logger.warn("No environment variables found for mongo-database! " +
       "Falling back to dev-settings: localhost:27017")
   }
 
-  val mongoClient = MongoClient(mongoDBAddress , 27017)
+  val mongoClient = MongoClient(mongoDBAddress, 27017)
 }
 
 class ApiServer extends ProductioStack {
@@ -40,18 +41,20 @@ class ApiServer extends ProductioStack {
   // the JValueResult trait.
   protected implicit val jsonFormats: Formats = DefaultFormats
 
-  val logger =  LoggerFactory.getLogger(getClass)
+  val logger = LoggerFactory.getLogger(getClass)
+
+  val CSV_SEPERATOR = ";"
 
   /**
-   * Add a product
-   *
-   * Example: curl -X POST --header "user: test" http://localhost:8080/api/product/123
-   */
+    * Add a product
+    *
+    * Example: curl -X POST --header "user: test" http://localhost:8080/api/product/123
+    */
   post("/api/product/:id") {
     val user = request.getHeader("user")
     val id = params("id")
     try {
-      val result = ProductEvent.create(new BSONTimestamp(), id,  "IN", user)
+      val result = ProductEvent.create(new BSONTimestamp(), id, "IN", user)
       logger.info(user + " posted " + id + "  => " + result)
       write(result._1)
     } catch {
@@ -60,10 +63,10 @@ class ApiServer extends ProductioStack {
   }
 
   /**
-   * Remove a product
-   *
-   * Example: curl -X DELETE --header "user: test" http://localhost:8080/api/product/123
-   */
+    * Remove a product
+    *
+    * Example: curl -X DELETE --header "user: test" http://localhost:8080/api/product/123
+    */
   delete("/api/product/:id") {
     val user = request.getHeader("user")
     val id = params("id")
@@ -78,35 +81,40 @@ class ApiServer extends ProductioStack {
   }
 
   get("/api/product") {
-    write(ProductEvent.all())
+    params.getOrElse("format", "json") match {
+      case "csv" =>
+        Array("id", "productid", "user", "event", "timestamp").mkString(CSV_SEPERATOR) +
+          System.lineSeparator() +
+          ProductEvent.all().map(productEvent => Array(productEvent._id, productEvent.productid, productEvent.user,
+            productEvent.event, productEvent.timestamp.get).mkString(CSV_SEPERATOR)).mkString(System.lineSeparator())
+      case _ => write(ProductEvent.all())
+    }
   }
 
-  // Homeserver
   /**
-   * Add a mac recording
-   *
-   * Example: curl -X POST -H "Content-Type: application/json" --header "user: test" -d '{ "macs" : ["mac1"], "timestamp" : 13233  }' http://localhost:8080/api/home/online
-   */
+    * Add a mac recording
+    *
+    * Example: curl -X POST -H "Content-Type: application/json" --header "user: test" -d '{ "macs" : ["mac1"], "timestamp" : 13233  }' http://localhost:8080/api/home/online
+    */
   post("/api/home/online") {
     val user = request.getHeader("user")
     var result = Ok()
-    var macRecording : Option[MacRecordingInput] = None
+    var macRecording: Option[MacRecordingInput] = None
     val body = request.body
-    if(body == null || body.length == 0) {
+    if (body == null || body.length == 0) {
       InternalServerError("No body provided")
     }
-    
+
     try {
       macRecording = Some(parse(body).extract[MacRecordingInput])
     } catch {
-      case e : Throwable => {
+      case e: Throwable => {
         InternalServerError("Bad input provided: " + e.getMessage)
         e.printStackTrace()
       }
     }
     try {
       macRecording.map(_.Macs).foreach(mac => {
-//        macCollection += MongoDBObject("mac" -> mac, "time" -> macRecording.get.Timestamp, "user" -> user)
         MacRecordingEvent.create(macRecording.get.Timestamp, mac.mkString("|"), user)
       })
     } catch {
@@ -117,7 +125,14 @@ class ApiServer extends ProductioStack {
   }
 
   get("/api/home/online") {
-    write(MacRecordingEvent.all())
+    params.getOrElse("format", "json") match {
+      case "csv" =>
+        Array("id", "user", "time", "macs").mkString(CSV_SEPERATOR) +
+          System.lineSeparator() +
+          MacRecordingEvent.all().map(macRecordingEvent => Array(macRecordingEvent._id, macRecordingEvent.user,
+            macRecordingEvent.time, macRecordingEvent.mac).mkString(CSV_SEPERATOR)).mkString(System.lineSeparator())
+      case _ => write(MacRecordingEvent.all())
+    }
   }
 
   get("/") {
@@ -126,4 +141,4 @@ class ApiServer extends ProductioStack {
 }
 
 // Input Json2s DAOs
-case class MacRecordingInput(Macs : Array[String], Timestamp: Long)
+case class MacRecordingInput(Macs: Array[String], Timestamp: Long)
