@@ -18,11 +18,16 @@ nonEmptyMacs[, 'macCount'] = unlist(Map(function(x) length(x), filteredMacsList)
 nonEmptyMacs[, 'time'] = as.POSIXct(nonEmptyMacs[,'time'], origin="1970-01-01")
 
 # group by day
-roommatesByDay = aggregate(nonEmptyMacs$macCount, list(Time = format(nonEmptyMacs$time, "%Y-%m-%d")), max)
-roommatesByDay$Time = as.POSIXct(roommatesByDay$Time, origin="1970-01-01")
-plot(roommatesByDay$Time, roommatesByDay$x, type="s", main = "Roommates at home by day", xlab = "Time", ylab = "# of roommates")
+roommatesByDay = aggregate(nonEmptyMacs$macCount, list(time = format(nonEmptyMacs$time, "%Y-%m-%d")), max)
+roommatesByDay$time = as.POSIXct(roommatesByDay$time, origin="1970-01-01")
+names(roommatesByDay)[names(roommatesByDay)=="x"] = "count"
+plot(roommatesByDay$time, roommatesByDay$count, type="s", main = "Roommates at home by day", xlab = "Time", ylab = "# of roommates")
 
 # group by hour
-roommatesByHour = aggregate(nonEmptyMacs$macCount, list(Time = format(nonEmptyMacs$time, "%Y-%m-%d %H:00:00")), max)
-roommatesByHour$Time = strptime(roommatesByHour$Time,"%Y-%m-%d %H:%M:%S")
-plot(roommatesByHour$Time, roommatesByHour$x, type="h", main = "Roommates at home by hour", xlab = "Time", ylab = "# of roommates")
+roommatesByHour = aggregate(nonEmptyMacs$macCount, list(time = format(nonEmptyMacs$time, "%Y-%m-%d %H:00:00")), max)
+roommatesByHour$time = strptime(roommatesByHour$time,"%Y-%m-%d %H:%M:%S")
+names(roommatesByHour)[names(roommatesByHour)=="x"] = "count"
+plot(roommatesByHour$time, roommatesByHour$count, type="h", main = "Roommates at home by hour", xlab = "time", ylab = "# of roommates")
+
+# Save roommates/hour to file
+write.csv(roommatesByHour, file = "~/Github/productIO/scripts/data/roommatesByHour.csv")

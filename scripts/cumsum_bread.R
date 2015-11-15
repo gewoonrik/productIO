@@ -1,16 +1,14 @@
+# Required:
+# - products (from /api/products?format=csv)
+
 # Fetch data
-timestamps = products["timestamp"]
-events = products["event"]
-xs = c(t(timestamps))
-ys = c(t(events))
+events = products[, c('timestamp','event')]
+events$timestamp = as.Date(as.POSIXct(events$timestamp, origin="1970-01-01"))
 
 # Mapping OUT IN to 0 1
-val_event=c(-1,1)
-names(val_event)=c("OUT", "IN")
-ysm = val_event[ys]
-
-# Date
-xs = as.Date(as.POSIXct(xs, origin="1970-01-01"))
+eventToValue = c(1,-1) # for some reason R likes it reverse.
+names(eventToValue) = c("OUT", "IN")
+events$eventValue = eventToValue[events$event]
 
 # cumsum
-plot(xs, cumsum(ysm), type="b", main = "Bread in household over time", xlab = "Time", ylab = "# of bread")
+plot(events$timestamp, cumsum(events$eventValue), type="b", main = "Bread in household over time", xlab = "Time", ylab = "# of bread")
