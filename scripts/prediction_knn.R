@@ -3,7 +3,7 @@
 # - events (from cumsum_bread.R)
 
 # assign importance to hours (breakfast and lunch get higher importance)
-hourImportance = c(1,1,1,1,1,1,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1)
+hourImportance = c(0,0,0,0,0,0,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0)
 # Normalize it
 hourImportance = hourImportance/max(hourImportance)
 
