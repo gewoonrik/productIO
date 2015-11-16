@@ -1,0 +1,326 @@
+[
+  {
+    "_id": {
+      
+    },
+    "productid": "8710400043829",
+    "time": {
+      
+    },
+    "timestamp": 1443689633,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "8710400043829",
+    "time": {
+      
+    },
+    "timestamp": 1443809886,
+    "event": "OUT",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287493001891",
+    "time": {
+      
+    },
+    "timestamp": 1443809901,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287493001891",
+    "time": {
+      
+    },
+    "timestamp": 1444126943,
+    "event": "OUT",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287493001891",
+    "time": {
+      
+    },
+    "timestamp": 1444150849,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287493001891",
+    "time": {
+      
+    },
+    "timestamp": 1444293705,
+    "event": "OUT",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2289203001894",
+    "time": {
+      
+    },
+    "timestamp": 1444385277,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1444412252,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287573000998",
+    "time": {
+      
+    },
+    "timestamp": 1444638161,
+    "event": "OUT",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1444722966,
+    "event": "OUT",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1444835020,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1444983429,
+    "event": "OUT",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "8710400043775",
+    "time": {
+      
+    },
+    "timestamp": 1444996256,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "8710400130123",
+    "time": {
+      
+    },
+    "timestamp": 1444996272,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "8710400130123",
+    "time": {
+      
+    },
+    "timestamp": 1445339606,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "8710400043775",
+    "time": {
+      
+    },
+    "timestamp": 1445414243,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1445504106,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1445672097,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1445672104,
+    "event": "OUT",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1445672111,
+    "event": "OUT",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1446306307,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1446545485,
+    "event": "OUT",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1446552777,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287493001891",
+    "time": {
+      
+    },
+    "timestamp": 1446552835,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1446552860,
+    "event": "IN",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287483001894",
+    "time": {
+      
+    },
+    "timestamp": 1446919801,
+    "event": "OUT",
+    "user": "Rik"
+  },
+  {
+    "_id": {
+      
+    },
+    "productid": "2287493001891",
+    "time": {
+      
+    },
+    "timestamp": 1447070216,
+    "event": "OUT",
+    "user": "Rik"
+  }
+]
