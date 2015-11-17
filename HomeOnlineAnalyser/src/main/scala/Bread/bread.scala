@@ -32,7 +32,7 @@ case class Bread(productId : String, in: Long, out: Long) {
         current =>  !current.equals(in) || in.getHourOfDay <= 13 //if the check in was after 13:59, then don't count that day
       )
       .filter(
-        current => !current.equals(out) || current.getHourOfDay > 10 //if the check out was before 10, then don't count this day, since it was gone for most of the day, probably at the start
+        current => !new LocalDate(current).equals(dayOut) || out.getHourOfDay > 10 //if the check out was before 10, then don't count this day, since it was gone for most of the day, probably at the start
       )
       .toList
   }
