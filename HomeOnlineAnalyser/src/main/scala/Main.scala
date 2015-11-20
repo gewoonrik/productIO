@@ -1,31 +1,39 @@
+import Online.Day
+import Bread.Bread
+import org.joda.time.{LocalTime, LocalDate}
+
 /**
- * Created by rik on 08/11/15.
+ * Created by rik on 17/11/15.
  */
-
-import java.util.Calendar
-
-import scala.collection.immutable.SortedMap
-import scala.io.Source
-import spray.json._
-import DataJsonProtocol._
-
-
 object Main {
+
   def main(args: Array[String]) {
-    val json = Source.fromURL("http://erwinvaneyk.nl/api/home/online").mkString
-    val jsonAST = json.parseJson
+    val days  =
+      Day.getDays
+        .map(day => {
+          day.realDay -> day
+        }).toMap
 
-    val data = jsonAST.convertTo[List[Data]]
-      .filter(data => data.mac != "")
-      .filter(data => data.user == "Rik")
-      .groupBy(data => data.getDate.get(Calendar.DAY_OF_WEEK))
-      .map(tuple =>
-          (tuple._1,
-            tuple._2.groupBy(data => data.getDate.get(Calendar.HOUR_OF_DAY))
-              .map(tuple => (tuple._1, tuple._2.flatMap(data => data.getMacs).distinct.size))
-          ))
-
-    println(SortedMap(data.get(2).get.toSeq:_*))
+    val breads = Bread.getBreads
+    println(breads.size)
+    val manHoursPerBread =
+      //get al breads that have online information for all days the bread has been eaten
+      breads.filter(bread =>
+        bread.getDaysEaten.forall(day => days.get(new LocalDate(day)).isDefined)
+      )
+      //map them to manhours
+      .map(bread => {
+        bread.getDaysEaten
+          //get the corresponding online data for each day
+          .map(day => days.get(new LocalDate(day)).get)
+          //for each day calculate the manhours eating that day
+          .map(day => {
+            day.getAveragePeopleHomeBetween(7, 14)
+          })
+          .sum
+      }
+      )
+    println(manHoursPerBread)
 
   }
 }
