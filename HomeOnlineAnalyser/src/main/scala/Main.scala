@@ -14,8 +14,22 @@ object Main {
           day.realDay -> day
         }).toMap
 
+
+    println(Day.getDays
+      .groupBy(day => day.realDay.getDayOfWeek)
+      .map(
+        tuple => (tuple._1, tuple._2.map(day => Math.round(day.getAveragePeopleHomeBetween(7, 9)*100)/100.0))
+      ))
+
     val breads = Bread.getBreads
-    println(breads.size)
+
+    println(Bread.getBreads
+      .groupBy(bread => bread.getDateTimeIn.getDayOfWeek)
+      .map {
+      case (day, breads_) =>
+        (day, breads_.map(bread => bread.getDaysEaten.size))
+      })
+
     val manHoursPerBread =
       //get al breads that have online information for all days the bread has been eaten
       breads.filter(bread =>
@@ -28,7 +42,7 @@ object Main {
           .map(day => days.get(new LocalDate(day)).get)
           //for each day calculate the manhours eating that day
           .map(day => {
-            day.getAveragePeopleHomeBetween(7, 14)
+            day.getAveragePeopleHomeBetween(7, 9)
           })
           .sum
       }
