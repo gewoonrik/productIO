@@ -13,10 +13,20 @@ case class Day(realDay: LocalDate, hourToPersons : Map[Int, Int]) {
   def getAveragePeopleHomeBetween(startHour: Int, endHour: Int): Double = {
     val peopleHome =
       (startHour until endHour)
-      .map(hourToPersons.get)
-      .map(_.get)
+        .filter(hourToPersons.isDefinedAt)
+        .map(hourToPersons.get)
+        .map(_.get)
 
     peopleHome.sum/peopleHome.size.asInstanceOf[Double]
+  }
+
+  def getDistinctPeopleHomeBetween(startHour: Int, endHour: Int): Double = {
+      (startHour until endHour)
+        .filter(hourToPersons.isDefinedAt)
+        .map(hourToPersons.get)
+        .map(_.get)
+        .max
+
   }
 }
 

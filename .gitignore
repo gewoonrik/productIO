@@ -12,3 +12,5 @@ proguard/
 *.dex
 *.class
 .idea/
+HomeOnlineAnalyser/project/
+HomeOnlineAnalyser/target/
