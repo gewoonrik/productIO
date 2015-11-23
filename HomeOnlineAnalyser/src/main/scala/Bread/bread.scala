@@ -10,12 +10,22 @@ import scala.io.Source
  */
 case class Bread(productId : String, in: Long, out: Long) {
 
-  def getDateTimeIn = {
-    new DateTime(in*1000+60*60*1000)
+  def getDateTimeIn : DateTime = {
+    val dateTimeIn = new DateTime(in*1000+60*60*1000)
+    //if the check in was after 13:59, then don't count that day
+    if(dateTimeIn.getHourOfDay > 13) {
+      return dateTimeIn + 1.day
+    }
+    dateTimeIn
   }
 
-  def getDateTimeOut = {
-    new DateTime(out*1000+60*60*1000)
+  def getDateTimeOut : DateTime = {
+    val dateTimeOut = new DateTime(out*1000+60*60*1000)
+    //if the check out was before 11 then don't count this day, since it was gone for most of the day, probably at the start
+    if(dateTimeOut.getHourOfDay < 11) {
+      return dateTimeOut - 1.day
+    }
+    dateTimeOut
 
   }
 
@@ -28,12 +38,6 @@ case class Bread(productId : String, in: Long, out: Long) {
     val numberOfDays = Days.daysBetween(dayIn, dayOut).getDays
     (0 to numberOfDays)
       .map(days => in +days.days)
-      .filter(
-        current =>  !current.equals(in) || in.getHourOfDay <= 13 //if the check in was after 13:59, then don't count that day
-      )
-      .filter(
-        current => !new LocalDate(current).equals(dayOut) || out.getHourOfDay > 10 //if the check out was before 10, then don't count this day, since it was gone for most of the day, probably at the start
-      )
       .toList
   }
 
