@@ -1,0 +1,11 @@
+# 4 figures arranged in 2 rows and 2 columns
+attach(mtcars)
+par(mfrow=c(1,7))
+counts <- c(1,2,3)
+barplot(c(1,3), ylim=c(0,4), xlab="Monday", ylab="number of days untill check-out")
+barplot(c(1), ylim=c(0,4), xlab="Tuesday")
+barplot(c(2,4,1), ylim=c(0,4), xlab="Wednesday")
+barplot(c(2,2,2), ylim=c(0,4), xlab="Thursday")
+barplot(c(4), ylim=c(0,4), xlab="Friday")
+barplot(c(4,3), ylim=c(0,4), xlab="Saturday")
+barplot(c(3,2), ylim=c(0,4), xlab="Sunday")

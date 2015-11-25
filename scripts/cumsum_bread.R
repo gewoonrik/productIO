@@ -11,4 +11,4 @@ names(eventToValue) = c("OUT", "IN")
 events$eventValue = eventToValue[events$event]
 
 # cumsum
-plot(events$timestamp, cumsum(events$eventValue), type="b", main = "Bread in household over time", xlab = "Time", ylab = "# of bread")
+plot(events$timestamp, cumsum(events$eventValue), type="b", xlab = "Time", ylab = "Number of breads")
